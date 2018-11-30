@@ -111,7 +111,9 @@ public class TechJobs {
     }
 
     // Print a list of jobs
-    private static void printJobs(ArrayList<HashMap<String, String>> someJobs) {
+    private static void printJobs(ArrayList<HashMap<String, String>> jobsList) {
+        ArrayList<HashMap<String, String>> someJobs = (ArrayList<HashMap<String, String>>) jobsList.clone();
+
         if (someJobs.size() > 0) {
             System.out.println("\n\nHere are " + someJobs.size() + " listings: \n");
             for (HashMap<String, String> aJob : someJobs) {
