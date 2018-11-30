@@ -10,6 +10,8 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Collections;
 
 /**
  * Created by LaunchCode
@@ -43,6 +45,8 @@ public class JobData {
             }
         }
 
+        Collections.sort(values);
+
         return values;
     }
 
@@ -71,18 +75,50 @@ public class JobData {
         loadData();
 
         ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+        String searchValue = value.toLowerCase();
 
         for (HashMap<String, String> row : allJobs) {
 
-            String aValue = row.get(column);
+            String aValue = row.get(column).toLowerCase();
 
-            if (aValue.contains(value)) {
+            if (aValue.contains(searchValue)) {
                 jobs.add(row);
             }
         }
 
         return jobs;
     }
+
+
+    public static ArrayList<HashMap<String, String>> findByValue(String value){
+
+        //load date, if not already loaded
+        loadData();
+
+        ArrayList<String> columns = new ArrayList<>();
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+        String searchValue = value.toLowerCase();
+        HashMap<String, String> thisJob = allJobs.get(0);
+
+        //create an ArrayList of columns to iterate through
+        for (Map.Entry<String, String> thisDetail : thisJob.entrySet()) {
+            String field = thisDetail.getKey();
+            columns.add(field);
+        }
+
+        //check every column of each row for the search value
+        for (HashMap<String, String> row : allJobs) {
+            for (String column : columns) {
+                String aValue = row.get(column).toLowerCase();
+                if (aValue.contains(searchValue)) {
+                    jobs.add(row);
+                }
+            }
+        }
+        return jobs;
+    }
+
+
 
     /**
      * Read in data from a CSV file and store it in a list
